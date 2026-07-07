@@ -33,6 +33,7 @@
     "@esbuild-kit/core-utils": "npm:@esbuild-kit/core-utils@latest"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^22.10.10",
     "@types/pg": "^8.11.10",
