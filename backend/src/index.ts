@@ -36,7 +36,9 @@ app.post("/webhooks/polar", rawJson, (req, res) => {
 });
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: env.NODE_ENV === "production" ? env.FRONTEND_URL : "*",
+}));
 app.use(clerkMiddleware());
 app.use(sentryClerkUserMiddleware);
 
@@ -55,7 +57,7 @@ const publicDir = path.join(process.cwd(), "public");
 if (fs.existsSync(publicDir)) {
   app.use(express.static(publicDir));
 
-  app.get("/{*any}", (req, res, next) => {
+  app.get("*", (req, res, next) => {
     if (req.method !== "GET" && req.method !== "HEAD") {
       next();
       return;

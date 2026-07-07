@@ -10,12 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@clerk/clerk-react": "^5.61.8",
     "@clerk/react": "^6.11.4",
+    "@stream-io/video-react-sdk": "^1.0.0",
+    "lucide-react": "^0.400.0",
+    "stream-chat": "^9.0.0",
+    "stream-chat-react": "^13.0.0",
+    "zustand": "^5.0.0",
     "@tailwindcss/vite": "^4.2.2",
     "@tanstack/react-query": "^5.101.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "@sentry/react": "^8.0.0",
     "react-router": "^8.1.0",
     "tailwindcss": "^4.3.2"
   },
