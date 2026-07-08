@@ -18,7 +18,7 @@ function checkoutBreadcrumbs() {
     category: "checkout",
     message: "Cart totals recomputed",
     level: "info",
-    data: { subtotalUsd: 184.5, lineCount: 3 },
+    data: { subtotalCOP: 184.5, lineCount: 3 },
   });
 }
 
@@ -42,8 +42,8 @@ function sendPaymentDeclinedError() {
     scope.setTag("payment.processor", "stripe");
     scope.setLevel("error");
     scope.setContext("payment", {
-      amountUsd: 184.5,
-      currency: "usd",
+      amountCOP: 184.5,
+      currency: "COP",
       last4: "4242",
       declineCode: "card_declined",
       networkDeclineCode: "05",
