@@ -414,7 +414,7 @@ export function SentryDemoPage() {
 
       <p className="mt-8 text-sm text-base-content/55">
         <Link to="/" className="link link-hover">
-          ← Back to shop
+          ← Volver a la tienda
         </Link>
       </p>
     </div>

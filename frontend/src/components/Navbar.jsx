@@ -41,13 +41,13 @@ const Navbar = () => {
         <nav className="flex items-center gap-1 md:gap-1.5">
           <Link to="/" className="btn btn-ghost gap-2 font-medium">
             <ShoppingBagIcon className="size-6 opacity-90" aria-hidden />
-            <span className="hidden sm:inline">Shop</span>
+            <span className="hidden sm:inline">Tienda</span>
           </Link>
 
           <Show when={"signed-in"}>
             <Link to="/orders" className="btn btn-ghost gap-2 font-medium">
               <PackageIcon className="size-6 opacity-90" aria-hidden />
-              <span className="hidden sm:inline">Orders</span>
+              <span className="hidden sm:inline">Pedidos</span>
             </Link>
 
             {role === "admin" ? (
@@ -61,7 +61,7 @@ const Navbar = () => {
           <Link
             to="/cart"
             className="btn btn-ghost gap-2 font-medium indicator"
-            aria-label={cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}
+            aria-label={cartCount > 0 ? `Carrito, ${cartCount} artículos` : "Carrito"}
           >
             {cartCount > 0 ? (
               <span className="indicator-item badge badge-sm badge-accent min-w-2 px-1.5 font-sans text-xs tabular-nums">
@@ -69,14 +69,14 @@ const Navbar = () => {
               </span>
             ) : null}
             <ShoppingCartIcon className="size-6 opacity-90" aria-hidden />
-            <span className="hidden sm:inline">Cart</span>
+            <span className="hidden sm:inline">Carrito</span>
           </Link>
 
           <Show when={"signed-out"}>
             <SignInButton mode="modal">
               <button type="button" className="btn btn-primary btn-sm gap-1.5 px-3 shadow-md">
                 <LogInIcon className="size-4 drop-shadow-sm" aria-hidden />
-                Sign in
+                Iniciar sesión
               </button>
             </SignInButton>
           </Show>

@@ -27,7 +27,7 @@ function HomePage() {
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold text-base-content md:text-2xl uppercase font-mono">
-              Catalog
+              Catálogo
             </h2>
           </div>
 
@@ -37,7 +37,7 @@ function HomePage() {
               className={`btn btn-sm ${!categoryFilter ? "btn-primary" : "btn-ghost border border-base-300"}`}
               onClick={() => setCategory("")}
             >
-              All
+              Todos
             </button>
 
             {categoryChipsLoading
@@ -66,10 +66,10 @@ function HomePage() {
             ))}
           </ul>
         ) : error ? (
-          <PageError message="We couldn't load products. Please try again in a moment." />
+          <PageError message="No pudimos cargar los productos. Intenta de nuevo en un momento." />
         ) : products.length === 0 ? (
           <div className="rounded-box border border-base-300 bg-base-100 py-16 text-center text-base-content/60">
-            No products in this category yet.
+            Aún no hay productos en esta categoría.
           </div>
         ) : (
           <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">

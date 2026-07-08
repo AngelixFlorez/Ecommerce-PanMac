@@ -12,29 +12,29 @@ export function HomeHero({ categories, loadingCategories }) {
       <div className="relative grid gap-8 p-8 md:grid-cols-2 md:items-center md:p-12 lg:p-14">
         <div className="text-left">
           <h1 className="text-3xl font-bold tracking-tight text-base-content md:text-4xl lg:text-5xl">
-            Hardware &amp; workspace, <span className="text-primary">ready to ship</span>
+            Panadería temática, <span className="text-primary">horneada para sorprender</span>
           </h1>
 
           <p className="mt-4 max-w-lg text-base leading-relaxed text-base-content/70">
-            Audio, wearables, workspace, and travel—curated for work and home. Secure checkout;
-            after payment, use your order page for support chat and video.
+            Galletas, panes y postres inspirados en el universo arcade retro—horneados frescos para tu casa o evento. Pago seguro;
+            después de tu compra, usa la página de tu pedido para chat de soporte.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
             <a href="#catalog" className="btn btn-primary gap-2 shadow-md">
-              Shop catalog
+              Ver catálogo
               <ArrowRightIcon className="size-4" aria-hidden />
             </a>
 
             <Link to="/cart" className="btn btn-outline btn-accent">
-              View cart
+              Ver carrito
             </Link>
           </div>
         </div>
 
         <div className="grid gap-3">
           <div className="stat rounded-box border border-base-300 bg-base-100/80 px-4 py-3 shadow-sm">
-            <div className="stat-title text-xs uppercase text-base-content/50">Categories</div>
+            <div className="stat-title text-xs uppercase text-base-content/50">Categorías</div>
 
             <div className="stat-value text-2xl text-secondary">
               {loadingCategories ? (
@@ -44,13 +44,13 @@ export function HomeHero({ categories, loadingCategories }) {
               )}
             </div>
 
-            <div className="stat-desc text-xs">Curated groups</div>
+            <div className="stat-desc text-xs">Galletas, panes, pasteles y postres</div>
           </div>
 
           <div className="rounded-box border border-dashed border-accent/30 bg-accent/5 px-4 py-3">
             <div className="flex items-center gap-2 text-sm font-medium text-base-content">
               <SparklesIcon className="size-4 text-accent" aria-hidden />
-              Secure checkout · Priority support on paid orders
+              Pago seguro · Soporte prioritario en pedidos pagados
             </div>
           </div>
         </div>

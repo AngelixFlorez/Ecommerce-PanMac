@@ -32,7 +32,7 @@ function CartPage() {
     <div className="text-left">
       <h1 className="mb-8 flex items-center gap-2 text-3xl font-bold text-base-content">
         <ShoppingCartIcon className="size-8 text-primary" aria-hidden />
-        Cart
+        Carrito
       </h1>
 
       {items.length === 0 ? (
@@ -40,7 +40,7 @@ function CartPage() {
       ) : productsLoading ? (
         <CartSkeleton lines={items.length} />
       ) : productsError ? (
-        <PageError message="Could not load product details. Refresh the page or try again shortly." />
+        <PageError message="No se pudieron cargar los detalles del producto. Refresca la página o inténtalo de nuevo." />
       ) : (
         <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
           <ul className="space-y-4">
@@ -70,22 +70,22 @@ function CartPage() {
                           {p.name}
                         </Link>
                       ) : (
-                        "Unknown product"
+                        "Producto desconocido"
                       )}
                     </div>
                     {p ? (
                       <p className="text-sm text-base-content/60">
-                        {formatPrice(p.priceCents, p.currency)} each
+                        {formatPrice(p.priceCents, p.currency)} c/u
                       </p>
                     ) : null}
                     <div className="mt-2 flex flex-wrap items-center gap-3">
-                      <span className="text-sm text-base-content/70">Qty</span>
+                      <span className="text-sm text-base-content/70">Cant</span>
                       <div className="join border border-base-300">
                         <button
                           type="button"
                           className="btn btn-sm join-item gap-0 px-2.5"
                           onClick={() => setQty(line.productId, line.quantity - 1)}
-                          aria-label={line.quantity <= 1 ? "Remove from cart" : "Decrease quantity"}
+                          aria-label={line.quantity <= 1 ? "Eliminar del carrito" : "Reducir cantidad"}
                         >
                           <MinusIcon className="size-4" aria-hidden />
                         </button>
@@ -100,7 +100,7 @@ function CartPage() {
                           className="btn btn-sm join-item gap-0 px-2.5"
                           onClick={() => setQty(line.productId, Math.min(99, line.quantity + 1))}
                           disabled={line.quantity >= 99}
-                          aria-label="Increase quantity"
+                          aria-label="Aumentar cantidad"
                         >
                           <PlusIcon className="size-4" aria-hidden />
                         </button>
@@ -109,8 +109,8 @@ function CartPage() {
                         type="button"
                         onClick={() => removeItem(line.productId)}
                         className="btn btn-ghost btn-square btn-sm text-error hover:bg-error/10"
-                        aria-label="Remove from cart"
-                        title="Remove from cart"
+                        aria-label="Eliminar del carrito"
+                        title="Eliminar del carrito"
                       >
                         <Trash2Icon className="size-4" aria-hidden />
                       </button>
@@ -145,7 +145,7 @@ function CartPage() {
                 ) : (
                   <ShoppingCartIcon className="size-4" aria-hidden />
                 )}
-                {checkoutLoading ? "Opening checkout…" : "Checkout securely"}
+                {checkoutLoading ? "Abriendo pago…" : "Pagar de forma segura"}
               </button>
             </Show>
 
@@ -153,7 +153,7 @@ function CartPage() {
               <SignInButton mode="modal">
                 <button type="button" className="btn btn-outline btn-primary mt-6 w-full gap-2">
                   <LogInIcon className="size-4" aria-hidden />
-                  Sign in to checkout
+                  Inicia sesión para pagar
                 </button>
               </SignInButton>
             </Show>
@@ -161,9 +161,9 @@ function CartPage() {
             <p className="mt-4 flex items-start gap-2 text-xs text-base-content/60">
               <HeadphonesIcon className="mt-0.5 size-3.5 shrink-0 text-primary" aria-hidden />
               <span>
-                After payment, open your order for{" "}
-                <strong className="text-base-content">support chat</strong>. Video invites appear in
-                that thread.
+                Después del pago, abre tu pedido para hacer{" "}
+                <strong className="text-base-content">chat de soporte</strong>. Las invitaciones a video aparecen en
+                ese chat.
               </span>
             </p>
           </aside>

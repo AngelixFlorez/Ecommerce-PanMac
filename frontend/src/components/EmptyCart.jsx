@@ -8,14 +8,14 @@ export default function EmptyCart() {
         <ShoppingCartIcon className="size-10" aria-hidden />
       </div>
       <h2 className="text-xl font-semibold tracking-tight text-base-content sm:text-2xl">
-        Your cart is empty
+        Tu carrito está vacío
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-base-content/65">
-        When you add products from the catalog, they&apos;ll show up here. Ready when you are.
+        Cuando agregues productos del catálogo, aparecerán aquí. Listo cuando quieras.
       </p>
       <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center">
         <Link to="/#catalog" className="btn btn-primary gap-2 shadow-md">
-          Browse catalog
+          Ver catálogo
           <ArrowRightIcon className="size-4" aria-hidden />
         </Link>
         <Link
@@ -23,7 +23,7 @@ export default function EmptyCart() {
           className="btn btn-ghost gap-2 border border-white bg-base-100 hover:border-primary/35 hover:bg-base-200/50"
         >
           <PackageIcon className="size-4" aria-hidden />
-          View orders
+          Ver pedidos
         </Link>
       </div>
     </div>

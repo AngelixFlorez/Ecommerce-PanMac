@@ -3,26 +3,26 @@ import { CreditCardIcon, HeadphonesIcon, ShieldCheckIcon, TruckIcon } from "luci
 const items = [
   {
     icon: TruckIcon,
-    title: "Fulfillment",
-    desc: "Structured catalog & inventory-ready model",
+    title: "Producción diaria",
+    desc: "Horneado fresco y catálogo organizado por categoría",
     color: "primary",
   },
   {
     icon: ShieldCheckIcon,
-    title: "Secure pay",
-    desc: "Encrypted payments and order confirmation",
+    title: "Pago seguro",
+    desc: "Pagos encriptados y confirmación de pedido",
     color: "secondary",
   },
   {
     icon: CreditCardIcon,
-    title: "Transparent",
-    desc: "Prices in COP, tax where applicable",
+    title: "Precios claros",
+    desc: "Precios en COP, impuestos donde aplique",
     color: "accent",
   },
   {
     icon: HeadphonesIcon,
-    title: "Human support",
-    desc: "Order-scoped chat + optional video",
+    title: "Atención personalizada",
+    desc: "Chat de soporte por pedido + video opcional",
     color: "info",
   },
 ];

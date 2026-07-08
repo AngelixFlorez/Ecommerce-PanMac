@@ -8,9 +8,9 @@ import { ArrowLeftIcon, CheckIcon, ExternalLinkIcon, ShoppingCartIcon } from "lu
 import { formatPrice } from "../utils/format";
 
 const HIGHLIGHTS = [
-  "Secure checkout",
-  "Support from your order after payment",
-  "Specs listed for this catalog",
+  "Pago seguro",
+  "Soporte desde tu pedido después del pago",
+  "Especificaciones listadas en este catálogo",
 ];
 
 function ProductDetailPage() {
@@ -20,7 +20,7 @@ function ProductDetailPage() {
   if (isLoading) return <ProductPageSkeleton />;
 
   if (error || !product) {
-    return <PageError message="Product not found." action={{ to: "/", label: "Back to shop" }} />;
+    return <PageError message="Producto no encontrado." action={{ to: "/", label: "Volver a la tienda" }} />;
   }
 
   const p = product;
@@ -34,7 +34,7 @@ function ProductDetailPage() {
       <nav className="breadcrumbs text-sm text-base-content/60">
         <ul>
           <li>
-            <Link to="/">Shop</Link>
+            <Link to="/">Tienda</Link>
           </li>
           <li>
             <Link to={`/?category=${encodeURIComponent(category)}`}>{category}</Link>
@@ -106,12 +106,12 @@ function ProductDetailPage() {
               className="btn btn-primary btn-lg gap-2 shadow-lg"
             >
               <ShoppingCartIcon className="size-5" aria-hidden />
-              Add to cart
+              Agregar al carrito
             </button>
 
             <Link to="/" className="btn btn-ghost btn-lg gap-2 border border-base-300">
               <ArrowLeftIcon className="size-4" aria-hidden />
-              Continue shopping
+              Seguir comprando
             </Link>
           </div>
         </div>

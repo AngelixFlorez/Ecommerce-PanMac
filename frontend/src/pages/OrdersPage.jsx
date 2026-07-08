@@ -21,7 +21,7 @@ function OrdersPage() {
 
   if (error) {
     return (
-      <PageError message="Could not load orders." action={{ to: "/", label: "Back to shop" }} />
+      <PageError message="No se pudieron cargar los pedidos." action={{ to: "/", label: "Volver a la tienda" }} />
     );
   }
 
@@ -29,20 +29,20 @@ function OrdersPage() {
     <div className="text-left">
       <h1 className="mb-2 flex items-center gap-2 text-3xl font-bold text-base-content">
         <PackageIcon className="size-8 text-primary" aria-hidden />
-        {staff ? "Orders" : "Your orders"}
+        {staff ? "Pedidos" : "Tus pedidos"}
       </h1>
 
       <p className="mb-8 text-sm text-base-content/70">
         {staff
-          ? "All store orders. Open one for customer support chat."
-          : "Paid orders include customer support: open an order for chat."}
+          ? "Todos los pedidos de la tienda. Abre uno para chat de soporte."
+          : "Los pedidos pagados incluyen soporte: abre un pedido para chatear."}
       </p>
 
       {orders.length === 0 ? (
         <p className="text-base-content/70">
-          No orders yet.{" "}
+          Aún no hay pedidos.{" "}
           <Link to="/" className="link link-primary">
-            Browse the shop
+            Explorar la tienda
           </Link>
         </p>
       ) : (
@@ -53,10 +53,10 @@ function OrdersPage() {
             const lineCount = previewItems.length;
             const summary =
               lineCount === 0
-                ? "No line items"
+                ? "Sin productos"
                 : lineCount === 1
-                  ? `${totalUnits} ${totalUnits === 1 ? "item" : "items"}`
-                  : `${lineCount} products · ${totalUnits} items`;
+                  ? `${totalUnits} ${totalUnits === 1 ? "producto" : "productos"}`
+                  : `${lineCount} productos · ${totalUnits} unidades`;
 
             return (
               <li key={o.id}>

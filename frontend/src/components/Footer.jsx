@@ -9,32 +9,32 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2 font-semibold text-base-content">
               <TruckIcon className="size-8 text-primary" aria-hidden />
-              PanMac Supply
+              PanMac
             </div>
             <p className="mt-3 text-sm leading-relaxed text-base-content/65">
-              Curated hardware and workspace tools. Paid orders include priority support; chat with
-              our team and join a video call when we share a link.
+              Galletas, panes y postres artesanales inspirados en el clásico universo arcade de laberintos y fantasmas. Los pedidos pagados incluyen soporte prioritario; chatea con
+              nuestro equipo y únete a una videollamada cuando compartamos el enlace.
             </p>
           </div>
 
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
-              Shop
+              Tienda
             </h3>
             <ul className="mt-3 space-y-2 text-sm">
               <li>
                 <Link to="/" className="link link-hover text-base-content/80">
-                  All products
+                  Todos los productos
                 </Link>
               </li>
               <li>
                 <Link to="/cart" className="link link-hover text-base-content/80">
-                  Cart
+                  Carrito
                 </Link>
               </li>
               <li>
                 <Link to="/orders" className="link link-hover text-base-content/80">
-                  Orders
+                  Pedidos
                 </Link>
               </li>
             </ul>
@@ -42,30 +42,29 @@ export default function Footer() {
 
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
-              Support
+              Soporte
             </h3>
             <ul className="mt-3 space-y-2 text-sm text-base-content/70">
               <li className="flex items-start gap-2">
                 <HeadphonesIcon className="mt-0.5 size-5 shrink-0 text-secondary" aria-hidden />
-                <span>Order-scoped chat after payment; video links shared in-thread.</span>
+                <span>Chat de soporte por pedido después del pago; enlaces de video compartidos en el chat.</span>
               </li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
-              Company
+              Sobre PanMac
             </h3>
             <p className="mt-3 text-sm text-base-content/65">
-              Built for teams who care about clear specs, fast fulfillment, and human support when
-              it matters.
+              Una panadería hecha para quienes disfrutan los detalles, el sabor artesanal y una experiencia de compra cercana y sin complicaciones.
             </p>
           </div>
         </div>
 
         <div className="mt-10 space-y-4 border-t border-base-300 pt-6">
           <p className="text-center text-xs text-base-content/50">
-            © {new Date().getFullYear()} PanMac Supply · All prices in COP
+            © {new Date().getFullYear()} PanMac · Todos los precios en COP
           </p>
         </div>
       </div>
