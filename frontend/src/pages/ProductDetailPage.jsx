@@ -76,7 +76,7 @@ function ProductDetailPage() {
 
         <div className="flex flex-col text-left">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="badge badge-primary badge-outline">{category}</span>
+            <span className="badge badge-accent badge-outline">{category}</span>
             <span className="text-xs font-mono text-base-content/45">{p.slug}</span>
           </div>
 
@@ -93,7 +93,7 @@ function ProductDetailPage() {
           <ul className="mt-6 space-y-2 rounded-box border border-base-300 bg-base-200/50 p-4">
             {HIGHLIGHTS.map((h) => (
               <li key={h} className="flex items-center gap-2 text-sm text-base-content/80">
-                <CheckIcon className="size-4 shrink-0 text-success" aria-hidden />
+                <CheckIcon className="size-4 shrink-0 text-accent" aria-hidden />
                 {h}
               </li>
             ))}

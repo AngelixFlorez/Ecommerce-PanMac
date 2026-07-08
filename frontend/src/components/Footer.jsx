@@ -46,7 +46,7 @@ export default function Footer() {
             </h3>
             <ul className="mt-3 space-y-2 text-sm text-base-content/70">
               <li className="flex items-start gap-2">
-                <HeadphonesIcon className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden />
+                <HeadphonesIcon className="mt-0.5 size-5 shrink-0 text-secondary" aria-hidden />
                 <span>Order-scoped chat after payment; video links shared in-thread.</span>
               </li>
             </ul>

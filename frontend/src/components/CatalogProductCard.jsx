@@ -21,7 +21,7 @@ export function CatalogProductCard({ product }) {
             />
           ) : null}
         </figure>
-        <span className="badge badge-sm absolute left-3 top-3 border-0 bg-base-100/90 text-xs font-medium text-base-content/80 backdrop-blur">
+        <span className="badge badge-info badge-sm absolute left-3 top-3 border-0 text-xs font-medium text-info-content backdrop-blur">
           {product.category ?? "General"}
         </span>
       </Link>
@@ -42,7 +42,7 @@ export function CatalogProductCard({ product }) {
           <button
             type="button"
             onClick={() => addItem(product.id)}
-            className="btn btn-primary btn-sm gap-1 shadow"
+            className="btn btn-accent btn-sm gap-1 shadow"
           >
             <PlusIcon className="size-4" aria-hidden />
             Add

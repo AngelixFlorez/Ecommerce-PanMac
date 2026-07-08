@@ -26,7 +26,7 @@ export function HomeHero({ categories, loadingCategories }) {
               <ArrowRightIcon className="size-4" aria-hidden />
             </a>
 
-            <Link to="/cart" className="btn btn-outline btn-primary">
+            <Link to="/cart" className="btn btn-outline btn-accent">
               View cart
             </Link>
           </div>
@@ -47,9 +47,9 @@ export function HomeHero({ categories, loadingCategories }) {
             <div className="stat-desc text-xs">Curated groups</div>
           </div>
 
-          <div className="rounded-box border border-dashed border-primary/30 bg-primary/5 px-4 py-3">
+          <div className="rounded-box border border-dashed border-accent/30 bg-accent/5 px-4 py-3">
             <div className="flex items-center gap-2 text-sm font-medium text-base-content">
-              <SparklesIcon className="size-4 text-primary" aria-hidden />
+              <SparklesIcon className="size-4 text-accent" aria-hidden />
               Secure checkout · Priority support on paid orders
             </div>
           </div>

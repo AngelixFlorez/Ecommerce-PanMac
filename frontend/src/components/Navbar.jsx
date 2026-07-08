@@ -34,7 +34,7 @@ const Navbar = () => {
             className="btn btn-ghost gap-2 px-2 font-mono text-lg font-semibold uppercase tracking-wide md:text-xl"
           >
             <img src="/logo.png" alt="PanMac" className="size-10 object-contain" />
-            <span className="leading-none">PanMac</span>
+            <span className="leading-none text-primary">PanMac</span>
           </Link>
         </div>
 
@@ -64,7 +64,7 @@ const Navbar = () => {
             aria-label={cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}
           >
             {cartCount > 0 ? (
-              <span className="indicator-item badge badge-sm badge-primary min-w-2 px-1.5 font-sans text-xs tabular-nums">
+              <span className="indicator-item badge badge-sm badge-accent min-w-2 px-1.5 font-sans text-xs tabular-nums">
                 {cartCount > 99 ? "99+" : cartCount}
               </span>
             ) : null}
@@ -87,7 +87,7 @@ const Navbar = () => {
                 appearance={{ elements: { avatarBox: "h-10 w-10 ring-2 ring-base-300" } }}
               />
               {role === "support" || role === "admin" ? (
-                <span className="badge badge-primary badge-sm hidden capitalize md:inline-flex">
+                <span className="badge badge-secondary badge-sm hidden capitalize md:inline-flex">
                   {role}
                 </span>
               ) : null}
