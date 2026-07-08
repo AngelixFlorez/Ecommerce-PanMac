@@ -29,15 +29,6 @@ function applyDemoScope(scope, scenarioId) {
 
 function sendPaymentDeclinedError() {
   const paymentIntentId = "pi_demo_3k9x";
-  Sentry.logger.info(
-    Sentry.logger.fmt`Confirming payment intent ${paymentIntentId}`,
-    logDemo({
-      area: "payments",
-      paymentIntentId,
-      amountUsd: 184.5,
-      currency: "usd",
-    }),
-  );
   checkoutBreadcrumbs();
   Sentry.addBreadcrumb({
     category: "payment",
@@ -45,23 +36,6 @@ function sendPaymentDeclinedError() {
     level: "info",
     data: { processor: "stripe", paymentIntentId: "pi_demo_3k9x" },
   });
-  Sentry.logger.warn(
-    "Issuer auth result: declined (demo)",
-    logDemo({
-      area: "payments",
-      declineCode: "card_declined",
-      networkDeclineCode: "05",
-    }),
-  );
-  Sentry.logger.error(
-    "Charge failed after issuer decision",
-    logDemo({
-      area: "payments",
-      processor: "stripe",
-      declineCode: "card_declined",
-      last4: "4242",
-    }),
-  );
   Sentry.withScope((scope) => {
     applyDemoScope(scope, "payment_declined");
     scope.setTag("area", "payments");
@@ -79,7 +53,7 @@ function sendPaymentDeclinedError() {
 }
 
 function sendInsufficientStockError() {
-  Sentry.logger.debug(
+  console.debug(
     "Inventory: loading availability for cart lines",
     logDemo({
       area: "inventory",
@@ -92,7 +66,7 @@ function sendInsufficientStockError() {
     message: "Reserving line items",
     level: "info",
   });
-  Sentry.logger.info(
+  console.info(
     "Inventory: reserving SKU NW-KEY-01",
     logDemo({
       area: "inventory",
@@ -100,7 +74,7 @@ function sendInsufficientStockError() {
       requested: 2,
     }),
   );
-  Sentry.logger.error(
+  console.error(
     "Reservation failed: insufficient on-hand quantity",
     logDemo({
       area: "inventory",
@@ -127,7 +101,7 @@ function sendInsufficientStockError() {
 }
 
 function sendShippingTimeoutError() {
-  Sentry.logger.info(
+  console.info(
     "Shipping: requesting live carrier rates",
     logDemo({
       area: "shipping",
@@ -143,7 +117,7 @@ function sendShippingTimeoutError() {
     level: "info",
     data: { carrier: "UPS" },
   });
-  Sentry.logger.warn(
+  console.warn(
     "UPS rating call exceeded client deadline; retry exhausted",
     logDemo({
       area: "shipping",
@@ -151,7 +125,7 @@ function sendShippingTimeoutError() {
       timeoutMs: 15000,
     }),
   );
-  Sentry.logger.error(
+  console.error(
     "Carrier rating request timed out",
     logDemo({
       area: "shipping",
@@ -176,7 +150,7 @@ function sendShippingTimeoutError() {
 }
 
 function sendTaxServiceError() {
-  Sentry.logger.info(
+  console.info(
     "Tax: computing for checkout session",
     logDemo({
       area: "tax",
@@ -185,7 +159,7 @@ function sendTaxServiceError() {
     }),
   );
   checkoutBreadcrumbs();
-  Sentry.logger.error(
+  console.error(
     "Tax engine rejected ship-from for jurisdiction",
     logDemo({
       area: "tax",
@@ -212,7 +186,7 @@ function sendTaxServiceError() {
 }
 
 function sendWebhookVerificationError() {
-  Sentry.logger.info(
+  console.info(
     "Webhook: received Stripe signed payload",
     logDemo({
       area: "webhooks",
@@ -227,7 +201,7 @@ function sendWebhookVerificationError() {
     level: "info",
   });
 
-  Sentry.logger.error(
+  console.error(
     "Webhook: signature verification failed (replay or clock skew)",
     logDemo({
       area: "webhooks",
@@ -253,7 +227,7 @@ function sendWebhookVerificationError() {
 }
 
 function sendRateLimitWarning() {
-  Sentry.logger.warn(
+  console.warn(
     "API gateway: tenant over public rate limit",
     logDemo({
       area: "api",
@@ -302,7 +276,7 @@ export function SentryDemoPage() {
   }, []);
 
   useEffect(() => {
-    Sentry.logger.trace("Sentry demo panel mounted", logDemo({ route: "/demo-sentry" }));
+    console.trace("Sentry demo panel mounted", logDemo({ route: "/demo-sentry" }));
   }, []);
 
   return (
