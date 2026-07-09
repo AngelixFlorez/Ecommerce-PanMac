@@ -24,22 +24,20 @@ const cartSchema = z.object({
 
 export async function createCheckout(req: Request, res: Response, next: NextFunction) {
   try {
-    // only signed-in users can start checkout
     const { userId, isAuthenticated } = getAuth(req);
     if (!isAuthenticated || !userId) {
       res.status(401).json({ error: "Unauthorized" });
       return;
     }
 
-    const parsed = cartSchema.safeParse(req.body);
-    if (!parsed.success) {
-      res.status(400).json({ error: "Invalid cart", details: parsed.error.flatten() });
+    if (!env.POLAR_ACCESS_TOKEN) {
+      res.status(503).json({ error: "Payments are not configured" });
       return;
     }
 
-    // polar access token is required
-    if (!env.POLAR_ACCESS_TOKEN) {
-      res.status(503).json({ error: "Payments are not configured" });
+    const parsed = cartSchema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: "Invalid cart", details: parsed.error.flatten() });
       return;
     }
 
@@ -51,7 +49,6 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
 
     const ids = parsed.data.items.map((i) => i.productId);
 
-    // load every cart product that exists, is active, and matches the IDs we asked for.
     const prodRows = await db
       .select({ id: products.id, priceCents: products.priceCents })
       .from(products)
@@ -73,7 +70,6 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
         productId: p.id,
         quantity: line.quantity,
         unitPriceCents: p.priceCents,
-        color: line.color ?? null,
       });
     }
 
@@ -84,36 +80,46 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
       return;
     }
 
-    const [session] = await db
-      .insert(checkoutSessions)
-      .values({
-        userId: localUser.id,
-        lines,
-        totalCents,
-        currency: "COP",
-      })
-      .returning();
+    let session;
+    try {
+      [session] = await db
+        .insert(checkoutSessions)
+        .values({
+          userId: localUser.id,
+          lines,
+          totalCents,
+          currency: "COP",
+        })
+        .returning();
+    } catch (dbErr) {
+      console.error("DB insert checkout_sessions error:", dbErr);
+      res.status(500).json({ error: "Failed to create checkout session" });
+      return;
+    }
 
-    const successUrl = `${env.FRONTEND_URL}/checkout/return?checkout_id={CHECKOUT_ID}`;
-    const returnUrl = `${env.FRONTEND_URL}/cart`;
-
-    const checkout = await polarCreateCheckout(env, {
-      products: [env.POLAR_CHECKOUT_PRODUCT_ID],
-      prices: {
-        [env.POLAR_CHECKOUT_PRODUCT_ID]: [
-          {
-            amount_type: "fixed",
-            price_currency: "COP",
-            price_amount: totalCents,
-          },
-        ],
-      },
-
-      success_url: successUrl,
-      return_url: returnUrl,
-      external_customer_id: userId,
-      metadata: { checkout_session_id: session.id },
-    });
+    let checkout;
+    try {
+      checkout = await polarCreateCheckout(env, {
+        products: [env.POLAR_CHECKOUT_PRODUCT_ID],
+        prices: {
+          [env.POLAR_CHECKOUT_PRODUCT_ID]: [
+            {
+              amount_type: "fixed",
+              price_currency: "COP",
+              price_amount: totalCents,
+            },
+          ],
+        },
+        success_url: `${env.FRONTEND_URL}/checkout/return?checkout_id={CHECKOUT_ID}`,
+        return_url: `${env.FRONTEND_URL}/cart`,
+        external_customer_id: userId,
+        metadata: { checkout_session_id: session.id },
+      });
+    } catch (polarErr) {
+      console.error("Polar create checkout error:", polarErr);
+      res.status(500).json({ error: "Payment gateway error" });
+      return;
+    }
 
     await db
       .update(checkoutSessions)
@@ -122,6 +128,7 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
 
     res.json({ checkoutUrl: checkout.url });
   } catch (e) {
+    console.error("Checkout unexpected error:", e);
     next(e);
   }
 }

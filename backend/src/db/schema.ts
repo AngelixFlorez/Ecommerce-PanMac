@@ -8,7 +8,6 @@ export type CheckoutSessionLine = {
   productId: string;
   quantity: number;
   unitPriceCents: number;
-  color?: string | null;
 };
 
 export type ProductColor = {
