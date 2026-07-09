@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { StreamChat } from "stream-chat";
 import { apiFetch } from "../lib/api.js";
 import { useAuth } from "@clerk/react";
@@ -11,6 +11,19 @@ export function useSupportTicketPage() {
 
   const [client, setClient] = useState(null);
   const [error, setError] = useState(null);
+
+  const { data: meData } = useQuery({
+    queryKey: ["me"],
+    queryFn: () => apiFetch("/api/me", { getToken }),
+    enabled: isSignedIn,
+  });
+
+  const role = meData?.user?.role;
+  const canInvite = role === "support" || role === "admin";
+
+  const inviteMutation = useMutation({
+    mutationFn: () => apiFetch(`/api/support/${id}/video-invite`, { getToken, method: "POST" }),
+  });
 
   useEffect(() => {
     if (!id) return undefined;
@@ -45,5 +58,5 @@ export function useSupportTicketPage() {
 
   const channel = client && id ? client.channel("messaging", `support-${id}`) : null;
 
-  return { client, error, channel };
+  return { client, error, channel, canInvite, inviteMutation };
 }

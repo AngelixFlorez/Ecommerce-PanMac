@@ -1,4 +1,4 @@
-import { HeadphonesIcon, Clock } from "lucide-react";
+import { HeadphonesIcon, Clock, VideoIcon } from "lucide-react";
 import { PageError } from "../components/PageError.jsx";
 import { useSupportTicketPage } from "../hooks/useSupportTicketPage.js";
 import {
@@ -14,7 +14,7 @@ import "stream-chat-react/dist/css/v2/index.css";
 import { Link } from "react-router";
 
 function SupportTicketPage() {
-  const { client, error, channel } = useSupportTicketPage();
+  const { client, error, channel, canInvite, inviteMutation } = useSupportTicketPage();
 
   if (error) {
     return <PageError message={error} />;
@@ -47,6 +47,32 @@ function SupportTicketPage() {
               <Clock className="size-3.5" aria-hidden />
               <span>El ticket expira en 24 horas</span>
             </div>
+
+            {canInvite ? (
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm gap-2"
+                  disabled={inviteMutation.isPending}
+                  onClick={() => inviteMutation.mutate()}
+                >
+                  {inviteMutation.isPending ? (
+                    <span className="loading loading-spinner loading-xs" />
+                  ) : (
+                    <VideoIcon className="size-4" aria-hidden />
+                  )}
+                  Enviar invitación de video
+                </button>
+
+                {inviteMutation.isError ? (
+                  <span className="text-sm text-error">No se pudo enviar la invitación.</span>
+                ) : null}
+
+                {inviteMutation.isSuccess ? (
+                  <span className="text-sm text-success">Invitación enviada.</span>
+                ) : null}
+              </div>
+            ) : null}
           </div>
 
           <Link to="/" className="btn btn-ghost btn-sm">

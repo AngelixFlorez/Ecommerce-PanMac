@@ -156,6 +156,87 @@ export async function getSupportTicketChannel(req: Request, res: Response, next:
   }
 }
 
+export async function createSupportVideoInvite(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { userId, isAuthenticated } = getAuth(req);
+    if (!isAuthenticated || !userId) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    const server = getStreamChatServer(env);
+
+    const localUser = await getLocalUser(userId);
+    if (!localUser) {
+      res.status(503).json({ error: "Account not synced yet" });
+      return;
+    }
+
+    if (!isStaff(localUser.role)) {
+      res.status(403).json({ error: "Only support or admin can send a video invite" });
+      return;
+    }
+
+    const [ticket] = await db
+      .select()
+      .from(supportTickets)
+      .where(eq(supportTickets.id, req.params.id as string))
+      .limit(1);
+
+    if (!ticket || ticket.status !== "open") {
+      res.status(404).json({ error: "Ticket not found or closed" });
+      return;
+    }
+
+    if (new Date() > ticket.expiresAt) {
+      res.status(403).json({ error: "This support ticket has expired" });
+      return;
+    }
+
+    const [owner] = await db.select().from(users).where(eq(users.id, ticket.userId)).limit(1);
+    if (!owner) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const customerSid = streamUserId(owner.clerkUserId);
+    await server.upsertUser({
+      id: customerSid,
+      name: owner.displayName ?? owner.email ?? "Customer",
+    });
+
+    const staffStreamUserId = streamUserId(userId);
+    await server.upsertUser({
+      id: staffStreamUserId,
+      name: streamChatDisplayName(localUser.role, localUser.displayName, localUser.email),
+    });
+
+    const channelId = `support-${ticket.id}`;
+    const channel = server.channel("messaging", channelId, {
+      name: `Soporte general · ${ticket.id.slice(0, 8)}`,
+      created_by_id: customerSid,
+    });
+
+    try { await channel.create(); } catch { /* already exists */ }
+    await channel.addMembers([customerSid, staffStreamUserId]);
+
+    const joinUrl = `${env.FRONTEND_URL.replace(/\/+$/, "")}/support/${ticket.id}/call`;
+
+    await channel.sendMessage({
+      text: `Videollamada — presiona Unirse abajo (mismo enlace para todos): ${joinUrl}`,
+      user_id: staffStreamUserId,
+      custom: {
+        video_invite: true,
+        join_url: joinUrl,
+      },
+    });
+
+    res.json({ ok: true, joinUrl });
+  } catch (e) {
+    next(e);
+  }
+}
+
 export async function deleteExpiredTickets() {
   const now = new Date();
   const expired = await db
