@@ -23,6 +23,7 @@ function CartPage() {
   const {
     checkout,
     checkoutLoading,
+    checkoutError,
     items,
     lines,
     productsError,
@@ -140,6 +141,12 @@ function CartPage() {
                 {formatPrice(subtotal, lines[0]?.product?.currency ?? "COP")}
               </span>
             </div>
+
+            {checkoutError ? (
+              <div role="alert" className="alert alert-error mt-4 text-sm">
+                {checkoutError}
+              </div>
+            ) : null}
 
             <Show when="signed-in">
               <button

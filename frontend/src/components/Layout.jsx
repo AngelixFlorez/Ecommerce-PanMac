@@ -7,16 +7,17 @@ import Navbar from "./Navbar";
 
 function Layout({ children }) {
   const { pathname } = useLocation();
-  const { isSignedIn } = useAuth();
+  const { userId, isLoaded } = useAuth();
   const clearCart = useCart((s) => s.clear);
-  const prevSignedIn = useRef(isSignedIn);
+  const prevUserId = useRef(userId);
 
   useEffect(() => {
-    if (prevSignedIn.current === true && isSignedIn === false) {
+    if (!isLoaded) return;
+    if (prevUserId.current && !userId) {
       clearCart();
     }
-    prevSignedIn.current = isSignedIn;
-  }, [isSignedIn, clearCart]);
+    prevUserId.current = userId;
+  }, [userId, isLoaded, clearCart]);
 
   const isProductPage = pathname.startsWith("/product/");
 

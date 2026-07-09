@@ -8,6 +8,7 @@ import { useState } from "react";
 export default function useCartPage() {
   const { getToken } = useAuth();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState(null);
 
   const items = useCart((s) => s.items);
   const setQty = useCart((s) => s.setQty);
@@ -37,20 +38,25 @@ export default function useCartPage() {
 
   async function checkout() {
     setCheckoutLoading(true);
+    setCheckoutError(null);
 
-    const body = {
-      items: items.map((i) => ({ productId: i.productId, quantity: i.quantity, color: i.color })),
-    };
+    try {
+      const body = {
+        items: items.map((i) => ({ productId: i.productId, quantity: i.quantity, color: i.color })),
+      };
 
-    const res = await apiFetch("/api/checkout", {
-      getToken,
-      method: "POST",
-      body,
-    });
+      const res = await apiFetch("/api/checkout", {
+        getToken,
+        method: "POST",
+        body,
+      });
 
-    if (res?.checkoutUrl) {
-      window.location.href = res.checkoutUrl;
-      return;
+      if (res?.checkoutUrl) {
+        window.location.href = res.checkoutUrl;
+        return;
+      }
+    } catch (e) {
+      setCheckoutError(e instanceof Error ? e.message : "Error al procesar el pago");
     }
 
     setCheckoutLoading(false);
@@ -66,5 +72,6 @@ export default function useCartPage() {
     subtotal,
     checkout,
     checkoutLoading,
+    checkoutError,
   };
 }
