@@ -53,7 +53,7 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
 
     // load every cart product that exists, is active, and matches the IDs we asked for.
     const prodRows = await db
-      .select()
+      .select({ id: products.id, priceCents: products.priceCents })
       .from(products)
       .where(and(inArray(products.id, ids), eq(products.active, true)));
 
