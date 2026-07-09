@@ -117,7 +117,8 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
       });
     } catch (polarErr) {
       console.error("Polar create checkout error:", polarErr);
-      res.status(500).json({ error: "Payment gateway error" });
+      const msg = polarErr instanceof Error ? polarErr.message : "Payment gateway error";
+      res.status(500).json({ error: msg });
       return;
     }
 
