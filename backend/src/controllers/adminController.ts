@@ -12,6 +12,11 @@ import { deleteImageKitAsset } from "../lib/imagekit";
 
 const env = getEnv();
 
+const colorSchema = z.object({
+  name: z.string().min(1),
+  hex: z.string().min(1),
+});
+
 const productCreate = z.object({
   slug: z.string().min(1),
   name: z.string().min(1),
@@ -25,6 +30,7 @@ const productCreate = z.object({
     .nullable(),
   imageKitFileId: z.union([z.string().min(1), z.literal(""), z.null()]).optional(),
   active: z.boolean().default(true),
+  colors: z.array(colorSchema).default([]),
 });
 
 const productPatch = productCreate.partial();
@@ -42,6 +48,7 @@ function buildProductUpdateSet(body: z.infer<typeof productPatch>) {
     data.imageKitFileId = body.imageKitFileId === "" ? null : body.imageKitFileId;
   }
   if (body.active !== undefined) data.active = body.active;
+  if (body.colors !== undefined) data.colors = body.colors;
   return data;
 }
 

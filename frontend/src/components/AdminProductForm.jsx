@@ -12,6 +12,7 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
   const [imageUrl, setImageUrl] = useState(initial?.imageUrl ?? "");
   const [imageKitFileId, setImageKitFileId] = useState(initial?.imageKitFileId ?? "");
   const [active, setActive] = useState(initial?.active ?? true);
+  const [colors, setColors] = useState(initial?.colors ?? []);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadError, setUploadError] = useState(null);
 
@@ -30,6 +31,7 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
       imageUrl: imageUrl.trim() || null,
       imageKitFileId: imageKitFileId.trim() || null,
       active,
+      colors,
     };
 
     if (initial) {
@@ -44,6 +46,7 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
         patch.imageKitFileId = body.imageKitFileId;
       }
       if (body.active !== initial.active) patch.active = body.active;
+      if (JSON.stringify(body.colors) !== JSON.stringify(initial.colors ?? [])) patch.colors = body.colors;
       if (Object.keys(patch).length === 0) {
         onCancel();
         return;
@@ -207,6 +210,50 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
           </div>
         ) : null}
       </div>
+
+      <fieldset className="border border-base-300 rounded-box p-4">
+        <legend className="text-sm font-medium text-base-content/70 px-1">Colors (opcional)</legend>
+        <p className="text-xs text-base-content/50 mb-3">Si el producto viene en varios colores, agrégalos aquí.</p>
+        {colors.map((c, i) => (
+          <div key={i} className="flex items-center gap-2 mb-2">
+            <input
+              className="input input-bordered input-sm w-28"
+              value={c.name}
+              onChange={(e) => {
+                const next = [...colors];
+                next[i] = { ...next[i], name: e.target.value };
+                setColors(next);
+              }}
+              placeholder="Nombre"
+            />
+            <input
+              type="color"
+              className="input input-bordered input-sm w-12 h-9 p-0.5"
+              value={c.hex}
+              onChange={(e) => {
+                const next = [...colors];
+                next[i] = { ...next[i], hex: e.target.value };
+                setColors(next);
+              }}
+            />
+            <span className="text-xs font-mono text-base-content/50">{c.hex}</span>
+            <button
+              type="button"
+              className="btn btn-ghost btn-xs text-error"
+              onClick={() => setColors(colors.filter((_, j) => j !== i))}
+            >
+              ✕
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          className="btn btn-ghost btn-xs gap-1 mt-1"
+          onClick={() => setColors([...colors, { name: "", hex: "#cccccc" }])}
+        >
+          + Add color
+        </button>
+      </fieldset>
 
       <label className="label cursor-pointer justify-start gap-3">
         <input

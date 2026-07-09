@@ -3,9 +3,16 @@ import { PlusIcon } from "lucide-react";
 import { formatPrice } from "../utils/format.js";
 import { IK_PRESETS, imageKitOptimizedUrl } from "../lib/imagekitUrl.js";
 import { useCart } from "../store/cart.js";
+import { useState } from "react";
 
 export function CatalogProductCard({ product }) {
   const addItem = useCart((s) => s.addItem);
+  const hasColors = product.colors && product.colors.length > 0;
+  const [selectedColor, setSelectedColor] = useState(hasColors ? product.colors[0]?.name ?? null : null);
+
+  function handleAdd() {
+    addItem(product.id, 1, selectedColor);
+  }
 
   return (
     <article className="card group h-full overflow-hidden border border-base-300 bg-base-100 shadow-md transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-xl">
@@ -35,13 +42,29 @@ export function CatalogProductCard({ product }) {
         <p className="line-clamp-3 text-sm leading-relaxed text-base-content/70">
           {product.description}
         </p>
+        {hasColors ? (
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-xs text-base-content/50 mr-1">Color:</span>
+            {product.colors.map((c) => (
+              <button
+                key={c.name}
+                type="button"
+                title={c.name}
+                onClick={() => setSelectedColor(c.name)}
+                className={`h-6 w-6 rounded-full border-2 transition ${selectedColor === c.name ? "border-primary scale-110" : "border-base-300 hover:border-base-content/40"}`}
+                style={{ backgroundColor: c.hex }}
+                aria-label={c.name}
+              />
+            ))}
+          </div>
+        ) : null}
         <div className="card-actions mt-auto items-center justify-between border-t border-base-200 pt-4">
           <span className="text-lg font-bold tabular-nums text-base-content">
             {formatPrice(product.priceCents, product.currency)}
           </span>
           <button
             type="button"
-            onClick={() => addItem(product.id)}
+            onClick={handleAdd}
             className="btn btn-accent btn-sm gap-1 shadow"
           >
             <PlusIcon className="size-4" aria-hidden />

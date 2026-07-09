@@ -6,6 +6,7 @@ import { IK_PRESETS, imageKitOptimizedUrl, imageKitWatermarkedUrl } from "../lib
 import { useCart } from "../store/cart";
 import { ArrowLeftIcon, CheckIcon, ExternalLinkIcon, ShoppingCartIcon } from "lucide-react";
 import { formatPrice } from "../utils/format";
+import { useState } from "react";
 
 const HIGHLIGHTS = [
   "Pago seguro",
@@ -28,6 +29,8 @@ function ProductDetailPage() {
   const watermarkedFullUrl = p.imageUrl
     ? imageKitWatermarkedUrl(p.imageUrl, IK_PRESETS.productHero)
     : null;
+  const hasColors = p.colors && p.colors.length > 0;
+  const [selectedColor, setSelectedColor] = useState(hasColors ? p.colors[0]?.name ?? null : null);
 
   return (
     <div>
@@ -99,10 +102,37 @@ function ProductDetailPage() {
             ))}
           </ul>
 
+          {hasColors ? (
+            <div className="mt-6">
+              <p className="text-sm font-medium text-base-content/70 mb-2">Color:</p>
+              <div className="flex flex-wrap items-center gap-2">
+                {p.colors.map((c) => (
+                  <button
+                    key={c.name}
+                    type="button"
+                    title={c.name}
+                    onClick={() => setSelectedColor(c.name)}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border-2 transition ${
+                      selectedColor === c.name
+                        ? "border-primary bg-primary/10"
+                        : "border-base-300 hover:border-base-content/40"
+                    }`}
+                  >
+                    <span
+                      className="h-5 w-5 rounded-full border border-base-300"
+                      style={{ backgroundColor: c.hex }}
+                    />
+                    <span className="text-sm font-medium">{c.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
           <div className="mt-8 flex flex-wrap gap-3">
             <button
               type="button"
-              onClick={() => addItem(p.id)}
+              onClick={() => addItem(p.id, 1, selectedColor)}
               className="btn btn-primary btn-lg gap-2 shadow-lg"
             >
               <ShoppingCartIcon className="size-5" aria-hidden />

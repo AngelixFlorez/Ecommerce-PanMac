@@ -16,7 +16,7 @@ export function HomeHero({ categories, loadingCategories }) {
           </h1>
 
           <p className="mt-4 max-w-lg text-base leading-relaxed text-base-content/70">
-            Galletas, panes y postres inspirados en el universo arcade retro—horneados frescos para tu casa o evento. Pago seguro;
+            Galletas, panes y postres inspirados en el universo arcade retro horneados frescos para tu casa o evento. Pago seguro;
             después de tu compra, usa la página de tu pedido para chat de soporte.
           </p>
 
@@ -50,7 +50,7 @@ export function HomeHero({ categories, loadingCategories }) {
           <div className="rounded-box border border-dashed border-accent/30 bg-accent/5 px-4 py-3">
             <div className="flex items-center gap-2 text-sm font-medium text-base-content">
               <SparklesIcon className="size-4 text-accent" aria-hidden />
-              Pago seguro · Soporte prioritario en pedidos pagados
+              Pago seguro · Soporte personalizado
             </div>
           </div>
         </div>

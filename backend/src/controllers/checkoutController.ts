@@ -16,6 +16,7 @@ const cartSchema = z.object({
       z.object({
         productId: z.string().uuid(),
         quantity: z.number().int().positive(),
+        color: z.string().optional().nullable(),
       }),
     )
     .min(1),
@@ -72,6 +73,7 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
         productId: p.id,
         quantity: line.quantity,
         unitPriceCents: p.priceCents,
+        color: line.color ?? null,
       });
     }
 

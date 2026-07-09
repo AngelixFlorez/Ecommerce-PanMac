@@ -15,6 +15,10 @@ import { Link } from "react-router";
 import { formatPrice } from "../utils/format";
 import { Show, SignInButton } from "@clerk/react";
 
+function cartItemKey(line) {
+  return line.color ? `${line.productId}::${line.color}` : line.productId;
+}
+
 function CartPage() {
   const {
     checkout,
@@ -46,7 +50,7 @@ function CartPage() {
           <ul className="space-y-4">
             {lines.map(({ line, product: p }) => (
               <li
-                key={line.productId}
+                key={cartItemKey(line)}
                 className="card card-side border border-base-300 bg-base-100 shadow-sm"
               >
                 <figure className="p-4">
@@ -78,13 +82,18 @@ function CartPage() {
                         {formatPrice(p.priceCents, p.currency)} c/u
                       </p>
                     ) : null}
+                    {line.color ? (
+                      <p className="mt-0.5 text-xs text-base-content/50">
+                        Color: <span className="font-medium">{line.color}</span>
+                      </p>
+                    ) : null}
                     <div className="mt-2 flex flex-wrap items-center gap-3">
                       <span className="text-sm text-base-content/70">Cant</span>
                       <div className="join border border-base-300">
                         <button
                           type="button"
                           className="btn btn-sm join-item gap-0 px-2.5"
-                          onClick={() => setQty(line.productId, line.quantity - 1)}
+                          onClick={() => setQty(line.productId, line.quantity - 1, line.color)}
                           aria-label={line.quantity <= 1 ? "Eliminar del carrito" : "Reducir cantidad"}
                         >
                           <MinusIcon className="size-4" aria-hidden />
@@ -98,7 +107,7 @@ function CartPage() {
                         <button
                           type="button"
                           className="btn btn-sm join-item gap-0 px-2.5"
-                          onClick={() => setQty(line.productId, Math.min(99, line.quantity + 1))}
+                          onClick={() => setQty(line.productId, Math.min(99, line.quantity + 1), line.color)}
                           disabled={line.quantity >= 99}
                           aria-label="Aumentar cantidad"
                         >
@@ -107,7 +116,7 @@ function CartPage() {
                       </div>
                       <button
                         type="button"
-                        onClick={() => removeItem(line.productId)}
+                        onClick={() => removeItem(line.productId, line.color)}
                         className="btn btn-ghost btn-square btn-sm text-error hover:bg-error/10"
                         aria-label="Eliminar del carrito"
                         title="Eliminar del carrito"

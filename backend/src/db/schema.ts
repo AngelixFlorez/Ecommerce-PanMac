@@ -8,6 +8,12 @@ export type CheckoutSessionLine = {
   productId: string;
   quantity: number;
   unitPriceCents: number;
+  color?: string | null;
+};
+
+export type ProductColor = {
+  name: string;
+  hex: string;
 };
 
 export const users = pgTable("users", {
@@ -32,6 +38,7 @@ export const products = pgTable("products", {
   /** ImageKit `fileId` for deletes */
   imageKitFileId: text("image_kit_file_id"),
   active: boolean("active").notNull().default(true),
+  colors: jsonb("colors").$type<ProductColor[]>().notNull().default([]),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
