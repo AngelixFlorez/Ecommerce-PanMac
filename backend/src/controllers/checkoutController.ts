@@ -88,7 +88,7 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
           userId: localUser.id,
           lines,
           totalCents,
-          currency: "COP",
+          currency: "cop",
         })
         .returning();
     } catch (dbErr) {
@@ -105,7 +105,7 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
           [env.POLAR_CHECKOUT_PRODUCT_ID]: [
             {
               amount_type: "fixed",
-              price_currency: "COP",
+              price_currency: "cop",
               price_amount: totalCents,
             },
           ],
