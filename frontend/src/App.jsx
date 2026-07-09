@@ -13,6 +13,8 @@ import OrderSummaryPage from "./pages/OrderSummaryPage";
 import OrderChatPage from "./pages/OrderChatPage";
 import OrderVideoPage from "./pages/OrderVideoPage";
 import AdminProductsPage from "./pages/AdminProductsPage";
+import SupportTicketPage from "./pages/SupportTicketPage";
+import AdminSupportPage from "./pages/AdminSupportPage";
 import { setDefaultCurrency } from "./utils/format";
 import { useEffect } from "react";
 
@@ -50,6 +52,16 @@ function App() {
         <Route
           path="/admin"
           element={isSignedIn ? <AdminProductsPage /> : <Navigate to="/" replace />}
+        />
+
+        <Route
+          path="/admin/support"
+          element={isSignedIn ? <AdminSupportPage /> : <Navigate to="/" replace />}
+        />
+
+        <Route
+          path="/support/:id"
+          element={isSignedIn ? <SupportTicketPage /> : <Navigate to="/" replace />}
         />
 
         {/* NESTED ROUTES */}

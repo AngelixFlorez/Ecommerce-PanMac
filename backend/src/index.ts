@@ -10,7 +10,7 @@ import * as Sentry from "@sentry/node";
 import { clerkMiddleware } from "@clerk/express";
 import { clerkWebhookHandler } from "./webhooks/clerk";
 import { getEnv } from "./lib/env";
-import keepAliveCron from "./lib/cron";
+import { keepalive, cleanup } from "./lib/cron";
 
 import productRouter from "./routes/productRouter";
 import meRouter from "./routes/meRouter";
@@ -19,6 +19,7 @@ import chekoutRouter from "./routes/chekoutRouter";
 import adminRouter from "./routes/adminRouter";
 import orderRouter from "./routes/orderRouter";
 import configRouter from "./routes/configRouter";
+import supportRouter from "./routes/supportRouter";
 
 import { polarWebhookHandler } from "./webhooks/polar";
 import { sentryClerkUserMiddleware } from "./middleware/sentryClerkUser";
@@ -54,6 +55,7 @@ app.use("/api/checkout", chekoutRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/config", configRouter);
+app.use("/api/support", supportRouter);
 
 const publicDir = path.join(process.cwd(), "public");
 if (fs.existsSync(publicDir)) {
@@ -91,6 +93,7 @@ app.use(
 app.listen(env.PORT, () => {
   console.log("Listening on port:", env.PORT);
   if (env.NODE_ENV === "production") {
-    keepAliveCron.start();
+    keepalive.start();
+    cleanup.start();
   }
 });

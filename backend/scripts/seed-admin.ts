@@ -48,6 +48,7 @@ async function main() {
   const clerkUser = await clerk.users.createUser({
     emailAddress: [EMAIL],
     password: PASSWORD,
+    skipPasswordChecks: true,
     privateMetadata: { role: "admin" },
   });
 

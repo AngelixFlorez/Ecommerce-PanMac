@@ -4,6 +4,7 @@ import { apiFetch } from "../lib/api";
 import { Link } from "react-router";
 
 import {
+  HeadphonesIcon,
   LogInIcon,
   PackageIcon,
   SettingsIcon,
@@ -51,10 +52,16 @@ const Navbar = () => {
             </Link>
 
             {role === "admin" ? (
-              <Link to="/admin" className="btn btn-ghost gap-2 font-medium text-secondary">
-                <SettingsIcon className="size-6" aria-hidden />
-                <span className="hidden sm:inline">Admin</span>
-              </Link>
+              <>
+                <Link to="/admin" className="btn btn-ghost gap-2 font-medium text-secondary">
+                  <SettingsIcon className="size-6" aria-hidden />
+                  <span className="hidden sm:inline">Admin</span>
+                </Link>
+                <Link to="/admin/support" className="btn btn-ghost gap-2 font-medium">
+                  <HeadphonesIcon className="size-6" aria-hidden />
+                  <span className="hidden sm:inline">Soporte</span>
+                </Link>
+              </>
             ) : null}
           </Show>
 

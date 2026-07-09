@@ -20,7 +20,8 @@ function ProductDetailPage() {
 
   const p = product;
   const hasColors = p?.colors && p.colors.length > 0;
-  const [selectedColor, setSelectedColor] = useState(hasColors ? p.colors[0]?.name ?? null : null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const canAdd = !hasColors || selectedColor != null;
 
   if (isLoading) return <ProductPageSkeleton />;
 
@@ -105,7 +106,9 @@ function ProductDetailPage() {
 
           {hasColors ? (
             <div className="mt-6">
-              <p className="text-sm font-medium text-base-content/70 mb-2">Color:</p>
+              <p className="text-sm font-medium text-base-content/70 mb-2">
+                Color: <span className="text-error">*</span>
+              </p>
               <div className="flex flex-wrap items-center gap-2">
                 {p.colors.map((c) => (
                   <button
@@ -127,6 +130,9 @@ function ProductDetailPage() {
                   </button>
                 ))}
               </div>
+              {selectedColor == null ? (
+                <p className="mt-1.5 text-xs text-error">Selecciona un color para agregar al carrito</p>
+              ) : null}
             </div>
           ) : null}
 
@@ -134,6 +140,7 @@ function ProductDetailPage() {
             <button
               type="button"
               onClick={() => addItem(p.id, 1, selectedColor)}
+              disabled={!canAdd}
               className="btn btn-primary btn-lg gap-2 shadow-lg"
             >
               <ShoppingCartIcon className="size-5" aria-hidden />

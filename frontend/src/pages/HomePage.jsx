@@ -3,6 +3,9 @@ import { HomeHero } from "../components/HomeHero";
 import { PageError } from "../components/PageError";
 import { TrustStrip } from "../components/TrustStrip";
 import { useHomeCatalog } from "../hooks/useHomeCatalog";
+import { HeadphonesIcon } from "lucide-react";
+import { useCreateSupportTicket } from "../hooks/useCreateSupportTicket";
+import { Show } from "@clerk/react";
 
 function HomePage() {
   const {
@@ -16,11 +19,35 @@ function HomePage() {
     setCategory,
   } = useHomeCatalog();
 
+  const { createTicket, loading: ticketLoading, error: ticketError } = useCreateSupportTicket();
+
   return (
     <div className="space-y-12">
       <HomeHero categories={categories} loadingCategories={loadingCategories} />
 
       <TrustStrip />
+
+      {/* SUPPORT BUTTON */}
+      <Show when="signed-in">
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={createTicket}
+            disabled={ticketLoading}
+            className="btn btn-secondary btn-lg gap-3 shadow-lg"
+          >
+            {ticketLoading ? (
+              <span className="loading loading-spinner loading-sm" />
+            ) : (
+              <HeadphonesIcon className="size-6" aria-hidden />
+            )}
+            {ticketLoading ? "Creando chat…" : "Soporte"}
+          </button>
+          {ticketError ? (
+            <p className="text-sm text-error mt-2">{ticketError}</p>
+          ) : null}
+        </div>
+      </Show>
 
       {/* CATELOG */}
       <section id="catolag" className="scroll-mt-24">

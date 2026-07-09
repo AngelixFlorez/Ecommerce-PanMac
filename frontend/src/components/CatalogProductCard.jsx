@@ -8,9 +8,11 @@ import { useState } from "react";
 export function CatalogProductCard({ product }) {
   const addItem = useCart((s) => s.addItem);
   const hasColors = product.colors && product.colors.length > 0;
-  const [selectedColor, setSelectedColor] = useState(hasColors ? product.colors[0]?.name ?? null : null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const canAdd = !hasColors || selectedColor != null;
 
   function handleAdd() {
+    if (!canAdd) return;
     addItem(product.id, 1, selectedColor);
   }
 
@@ -65,10 +67,11 @@ export function CatalogProductCard({ product }) {
           <button
             type="button"
             onClick={handleAdd}
+            disabled={!canAdd}
             className="btn btn-accent btn-sm gap-1 shadow"
           >
             <PlusIcon className="size-4" aria-hidden />
-            Add
+            {hasColors && selectedColor == null ? "Elegir color" : "Add"}
           </button>
         </div>
       </div>
