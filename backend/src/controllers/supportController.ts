@@ -139,18 +139,16 @@ export async function getSupportTicketChannel(req: Request, res: Response, next:
 
     const channelId = `support-${ticket.id}`;
 
-    let channel;
-    try {
-      channel = server.channel("messaging", channelId);
-      await channel.query({ watch: false });
-    } catch {
-      channel = server.channel("messaging", channelId, {
-        name: `Soporte general · ${ticket.id.slice(0, 8)}`,
-        created_by_id: streamChatUserId,
-      });
-      await channel.create();
-      await channel.addMembers([streamChatUserId]);
-    }
+    const channel = server.channel("messaging", channelId, {
+      name: `Soporte general · ${ticket.id.slice(0, 8)}`,
+      created_by_id: streamChatUserId,
+    });
+
+    // Create the channel if it doesn't exist yet (server SDK, so no permission issues)
+    try { await channel.create(); } catch { /* already exists */ }
+
+    // Ensure the current user is a member
+    await channel.addMembers([streamChatUserId]);
 
     res.json({ channelType: "messaging", channelId, streamUserId: streamChatUserId });
   } catch (e) {
