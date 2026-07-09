@@ -25,13 +25,13 @@ function CheckoutReturnPage() {
         </div>
       </div>
 
-      <h1 className="text-2xl font-bold text-base-content">Thanks for your order</h1>
+      <h1 className="text-2xl font-bold text-base-content">Gracias por tu pedido</h1>
 
       <p className="mt-4 text-base-content/70">
-        Your order is created after payment is confirmed. Open it from your orders list for{" "}
-        <strong className="text-base-content">support chat</strong> (it appears there as{" "}
-        <strong className="text-base-content">paid</strong>). We&apos;ll send video invites in that
-        thread when needed.
+        Tu pedido se crea después de confirmar el pago. Ábrelo desde tu lista de pedidos para el{" "}
+        <strong className="text-base-content">chat de soporte</strong> (aparecerá como{" "}
+        <strong className="text-base-content">pagado</strong>). Enviaremos invitaciones de video
+        en ese hilo cuando sea necesario.
       </p>
 
       {checkoutId ? (
@@ -40,7 +40,7 @@ function CheckoutReturnPage() {
 
       <Link to="/orders" className="btn btn-primary mt-8 gap-2">
         <PackageIcon className="size-4" aria-hidden />
-        View orders
+        Ver pedidos
       </Link>
     </div>
   );

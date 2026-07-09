@@ -25,8 +25,8 @@ function OrderVideoPage() {
   if (loadError || !order) {
     return (
       <PageError
-        message="Order not found or you don't have access."
-        action={{ to: "/orders", label: "Back to orders" }}
+        message="Pedido no encontrado o no tienes acceso."
+        action={{ to: "/orders", label: "Volver a pedidos" }}
       />
     );
   }
@@ -34,7 +34,7 @@ function OrderVideoPage() {
   if (!paid) {
     return (
       <div role="alert" className="alert alert-info">
-        <span>This order must be paid before you can join video support.</span>
+        <span>El pedido debe estar pagado antes de unirte al video de soporte.</span>
       </div>
     );
   }
@@ -55,7 +55,7 @@ function OrderVideoPage() {
     <div className="space-y-4 text-left">
       <Link to={`/orders/${id}/chat`} className="btn btn-ghost btn-sm gap-2 text-base-content/80">
         <ArrowLeftIcon className="size-4" aria-hidden />
-        Back to support chat
+        Volver al chat de soporte
       </Link>
 
       <div className="card border border-base-300 bg-base-100 shadow-sm">
@@ -66,10 +66,10 @@ function OrderVideoPage() {
             </div>
           </div>
           <div>
-            <h1 className="card-title text-lg">Video call</h1>
+            <h1 className="card-title text-lg">Videollamada</h1>
             <p className="text-sm text-base-content/70">
-              Same room as the invite link in chat. Allow camera and microphone when your browser
-              asks.
+              La misma sala que el enlace de invitación en el chat. Permite cámara y micrófono cuando
+              el navegador lo solicite.
             </p>
           </div>
         </div>

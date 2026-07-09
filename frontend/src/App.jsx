@@ -13,9 +13,18 @@ import OrderSummaryPage from "./pages/OrderSummaryPage";
 import OrderChatPage from "./pages/OrderChatPage";
 import OrderVideoPage from "./pages/OrderVideoPage";
 import AdminProductsPage from "./pages/AdminProductsPage";
+import { setDefaultCurrency } from "./utils/format";
+import { useEffect } from "react";
 
 function App() {
   const { isLoaded, isSignedIn } = useAuth();
+
+  useEffect(() => {
+    fetch("/api/config")
+      .then((r) => r.json())
+      .then((c) => { if (c?.currency) setDefaultCurrency(c.currency); })
+      .catch(() => {});
+  }, []);
 
   if (!isLoaded) return <PageLoader />;
 

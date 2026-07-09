@@ -1,7 +1,13 @@
+let _defaultCurrency = "COP";
+
+export function setDefaultCurrency(currency) {
+  _defaultCurrency = currency;
+}
+
 export function formatPrice(cents, currency) {
   return new Intl.NumberFormat(undefined, {
     style: "currency",
-    currency: (currency ?? "COP").toUpperCase(),
+    currency: (currency ?? _defaultCurrency).toUpperCase(),
   }).format(cents / 100);
 }
 

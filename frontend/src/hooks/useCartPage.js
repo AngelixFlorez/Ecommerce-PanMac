@@ -5,10 +5,25 @@ import { useQuery } from "@tanstack/react-query";
 import { apiFetch } from "../lib/api";
 import { useState } from "react";
 
+function emptyAddress() {
+  return { name: "", phone: "", address: "", city: "", notes: "" };
+}
+
+function validateAddress(addr) {
+  const errors = {};
+  if (!addr.name.trim()) errors.name = "El nombre es obligatorio";
+  if (!addr.phone.trim()) errors.phone = "El teléfono es obligatorio";
+  if (!addr.address.trim()) errors.address = "La dirección es obligatoria";
+  if (!addr.city.trim()) errors.city = "La ciudad es obligatoria";
+  return errors;
+}
+
 export default function useCartPage() {
   const { getToken } = useAuth();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState(null);
+  const [shippingAddress, setShippingAddress] = useState(emptyAddress);
+  const [addressErrors, setAddressErrors] = useState({});
 
   const items = useCart((s) => s.items);
   const setQty = useCart((s) => s.setQty);
@@ -37,12 +52,17 @@ export default function useCartPage() {
   }, 0);
 
   async function checkout() {
+    const errors = validateAddress(shippingAddress);
+    setAddressErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
     setCheckoutLoading(true);
     setCheckoutError(null);
 
     try {
       const body = {
         items: items.map((i) => ({ productId: i.productId, quantity: i.quantity, color: i.color })),
+        shippingAddress,
       };
 
       const res = await apiFetch("/api/checkout", {
@@ -73,5 +93,8 @@ export default function useCartPage() {
     checkout,
     checkoutLoading,
     checkoutError,
+    shippingAddress,
+    setShippingAddress,
+    addressErrors,
   };
 }

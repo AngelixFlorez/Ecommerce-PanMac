@@ -57,6 +57,7 @@ async function fulfillCheckoutSession(
         userId: session.userId,
         status: "paid",
         totalCents: session.totalCents,
+        shippingAddress: session.shippingAddress ?? null,
         polarCheckoutId: checkoutId ?? session.polarCheckoutId ?? null,
         ...(polarOrderId ? { polarOrderId } : {}),
       })
@@ -69,6 +70,7 @@ async function fulfillCheckoutSession(
           productId: line.productId,
           quantity: line.quantity,
           unitPriceCents: line.unitPriceCents,
+          color: line.color ?? null,
         })),
       );
     }

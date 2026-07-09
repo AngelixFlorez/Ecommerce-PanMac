@@ -8,6 +8,15 @@ export type CheckoutSessionLine = {
   productId: string;
   quantity: number;
   unitPriceCents: number;
+  color: string | null;
+};
+
+export type ShippingAddress = {
+  name: string;
+  phone: string;
+  address: string;
+  city: string;
+  notes?: string;
 };
 
 export type ProductColor = {
@@ -48,6 +57,7 @@ export const checkoutSessions = pgTable("checkout_sessions", {
     .references(() => users.id, { onDelete: "cascade" }),
   polarCheckoutId: text("polar_checkout_id").unique(),
   lines: jsonb("lines").$type<CheckoutSessionLine[]>().notNull(),
+  shippingAddress: jsonb("shipping_address").$type<ShippingAddress>(),
   totalCents: integer("total_cents").notNull(),
   currency: text("currency").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
@@ -61,6 +71,7 @@ export const orders = pgTable("orders", {
   status: text("status").$type<OrderStatus>().notNull().default("pending"),
   polarCheckoutId: text("polar_checkout_id"),
   polarOrderId: text("polar_order_id").unique(),
+  shippingAddress: jsonb("shipping_address").$type<ShippingAddress>(),
   totalCents: integer("total_cents").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
@@ -76,6 +87,7 @@ export const orderItems = pgTable("order_items", {
     .references(() => products.id, { onDelete: "restrict" }),
   quantity: integer("quantity").notNull(),
   unitPriceCents: integer("unit_price_cents").notNull(),
+  color: text("color"),
 });
 
 // cascade = “delete children when parent is deleted”; restrict = “don’t delete the parent if any child still points at it.”

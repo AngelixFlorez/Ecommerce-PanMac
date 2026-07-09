@@ -24,7 +24,7 @@ function AdminProductsPage() {
   }
 
   function handleDeleteProduct(product) {
-    if (!window.confirm(`Delete "${product.name}" permanently?`)) return;
+    if (!window.confirm(`¿Eliminar "${product.name}" permanentemente?`)) return;
 
     deleteMutation.mutate(product.id);
   }
@@ -35,8 +35,8 @@ function AdminProductsPage() {
         <div className="flex items-center gap-2">
           <PackageIcon className="size-8 text-secondary" aria-hidden />
           <div>
-            <h1 className="text-2xl font-bold text-base-content">Products</h1>
-            <p className="text-sm text-base-content/60">Manage catalog (admin only).</p>
+            <h1 className="text-2xl font-bold text-base-content">Productos</h1>
+            <p className="text-sm text-base-content/60">Gestionar catálogo (solo admin).</p>
           </div>
         </div>
         <button
@@ -48,7 +48,7 @@ function AdminProductsPage() {
           }}
         >
           <PlusIcon className="size-4" aria-hidden />
-          Add product
+          Añadir producto
         </button>
       </div>
 
@@ -59,12 +59,12 @@ function AdminProductsPage() {
           <table className="table table-zebra">
             <thead>
               <tr>
-                <th className="w-24">Preview</th>
-                <th>Name</th>
-                <th>Category</th>
+                <th className="w-24">Vista previa</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
                 <th>Slug</th>
-                <th>Price</th>
-                <th>Active</th>
+                <th>Precio</th>
+                <th>Activo</th>
                 <th />
               </tr>
             </thead>
@@ -97,7 +97,7 @@ function AdminProductsPage() {
                   <td>{formatPrice(p.priceCents, p.currency)}</td>
                   <td>
                     {p.active ? (
-                      <span className="badge badge-success badge-sm">yes</span>
+                      <span className="badge badge-success badge-sm">sí</span>
                     ) : (
                       <span className="badge badge-ghost badge-sm">no</span>
                     )}
@@ -113,7 +113,7 @@ function AdminProductsPage() {
                         }}
                       >
                         <PencilIcon className="size-3" aria-hidden />
-                        Edit
+                        Editar
                       </button>
 
                       <button
@@ -127,7 +127,7 @@ function AdminProductsPage() {
                         ) : (
                           <Trash2Icon className="size-3" aria-hidden />
                         )}
-                        Delete
+                        Eliminar
                       </button>
                     </div>
                   </td>
@@ -140,7 +140,7 @@ function AdminProductsPage() {
 
       <dialog className={`modal ${modalOpen ? "modal-open" : ""}`}>
         <div className="modal-box max-w-lg">
-          <h3 className="text-lg font-bold">{editing ? "Edit product" : "New product"}</h3>
+          <h3 className="text-lg font-bold">{editing ? "Editar producto" : "Nuevo producto"}</h3>
 
           <AdminProductForm
             key={editing?.id ?? "new"}

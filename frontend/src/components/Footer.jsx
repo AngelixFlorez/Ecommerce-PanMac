@@ -64,7 +64,7 @@ export default function Footer() {
 
         <div className="mt-10 space-y-4 border-t border-base-300 pt-6">
           <p className="text-center text-xs text-base-content/50">
-            © {new Date().getFullYear()} PanMac · Todos los precios en COP
+            © {new Date().getFullYear()} PanMac
           </p>
         </div>
       </div>

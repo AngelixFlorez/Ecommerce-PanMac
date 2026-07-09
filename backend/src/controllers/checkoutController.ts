@@ -10,6 +10,14 @@ import { polarCreateCheckout } from "../lib/polar";
 
 const env = getEnv();
 
+const shippingSchema = z.object({
+  name: z.string().min(1, "El nombre es obligatorio"),
+  phone: z.string().min(1, "El teléfono es obligatorio"),
+  address: z.string().min(1, "La dirección es obligatoria"),
+  city: z.string().min(1, "La ciudad es obligatoria"),
+  notes: z.string().optional(),
+});
+
 const cartSchema = z.object({
   items: z
     .array(
@@ -20,6 +28,7 @@ const cartSchema = z.object({
       }),
     )
     .min(1),
+  shippingAddress: shippingSchema,
 });
 
 export async function createCheckout(req: Request, res: Response, next: NextFunction) {
@@ -70,6 +79,7 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
         productId: p.id,
         quantity: line.quantity,
         unitPriceCents: p.priceCents,
+        color: line.color ?? null,
       });
     }
 
@@ -88,7 +98,8 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
           userId: localUser.id,
           lines,
           totalCents,
-          currency: "cop",
+          currency: env.STORE_CURRENCY,
+          shippingAddress: parsed.data.shippingAddress,
         })
         .returning();
     } catch (dbErr) {
@@ -105,7 +116,7 @@ export async function createCheckout(req: Request, res: Response, next: NextFunc
           [env.POLAR_CHECKOUT_PRODUCT_ID]: [
             {
               amount_type: "fixed",
-              price_currency: "cop",
+              price_currency: env.STORE_CURRENCY.toLowerCase(),
               price_amount: totalCents,
             },
           ],

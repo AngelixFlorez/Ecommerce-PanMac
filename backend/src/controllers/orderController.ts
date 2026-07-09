@@ -108,6 +108,7 @@ export async function getOrder(req: Request, res: Response, next: NextFunction) 
         id: orderItems.id,
         quantity: orderItems.quantity,
         unitPriceCents: orderItems.unitPriceCents,
+        color: orderItems.color,
         product: products,
       })
       .from(orderItems)
@@ -176,6 +177,71 @@ export async function createStreamChannel(req: Request, res: Response, next: Nex
     await channel.addMembers([streamChatUserId]);
 
     res.json({ channelType: "messaging", channelId, streamUserId: streamChatUserId });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function getUnreadCounts(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { userId, isAuthenticated } = getAuth(req);
+    if (!isAuthenticated || !userId) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    const localUser = await getLocalUser(userId);
+    if (!localUser) {
+      res.status(503).json({ error: "Account not synced yet" });
+      return;
+    }
+
+    if (!isStaff(localUser.role)) {
+      res.status(403).json({ error: "Forbidden" });
+      return;
+    }
+
+    const server = getStreamChatServer(env);
+    const staffSid = streamUserId(userId);
+
+    const orderRows = await db
+      .select({ id: orders.id })
+      .from(orders)
+      .where(eq(orders.status, "paid"));
+
+    if (orderRows.length === 0) {
+      res.json({ unread: {} });
+      return;
+    }
+
+    const channelIds = orderRows.map((o) => `order-${o.id}`);
+
+    const channels = await server.queryChannels(
+      { type: "messaging", id: { $in: channelIds } },
+      { last_updated: -1 },
+      { watch: false, state: true },
+    );
+
+    const unreadByOrder: Record<string, number> = {};
+
+    for (const ch of channels) {
+      const orderId = ch.id?.replace("order-", "");
+      if (!orderId) continue;
+      const read = ch.state?.read as unknown;
+      if (!read) continue;
+      let count = 0;
+      if (read instanceof Map) {
+        count = (read as Map<string, { unread_messages?: number }>).get(staffSid)?.unread_messages ?? 0;
+      } else if (typeof read === "object") {
+        const obj = read as Record<string, { unread_messages?: number }>;
+        count = obj[staffSid]?.unread_messages ?? 0;
+      }
+      if (count > 0) {
+        unreadByOrder[orderId] = count;
+      }
+    }
+
+    res.json({ unread: unreadByOrder });
   } catch (e) {
     next(e);
   }

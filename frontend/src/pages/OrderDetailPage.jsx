@@ -22,7 +22,7 @@ function OrderDetailPage() {
 
   if (error || !order) {
     return (
-      <PageError message="Order not found." action={{ to: "/orders", label: "Back to orders" }} />
+      <PageError message="Pedido no encontrado." action={{ to: "/orders", label: "Volver a pedidos" }} />
     );
   }
 
@@ -33,7 +33,7 @@ function OrderDetailPage() {
         className="btn btn-ghost btn-sm gap-2 px-0 text-base-content/70 hover:text-primary"
       >
         <ArrowLeftIcon className="size-4" aria-hidden />
-        Back to orders
+        Volver a pedidos
       </Link>
 
       <div className="overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-lg">
@@ -41,7 +41,7 @@ function OrderDetailPage() {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                Order details
+                Detalle del pedido
               </p>
 
               <h1 className="mt-1 font-mono text-2xl font-bold tracking-tight text-base-content sm:text-3xl">
@@ -64,15 +64,15 @@ function OrderDetailPage() {
                       : "badge-error"
                 }`}
               >
-                {order.status}
+                {order.status === "paid" ? "Pagado" : order.status === "pending" ? "Pendiente" : "Fallido"}
               </span>
 
               <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-base-content/50">
-                  Order total
+                  Total del pedido
                 </p>
                 <p className="text-2xl font-bold tabular-nums text-base-content sm:text-3xl">
-                  {formatPrice(order.totalCents, "COP")}
+                  {formatPrice(order.totalCents)}
                 </p>
               </div>
             </div>
@@ -81,9 +81,9 @@ function OrderDetailPage() {
 
         <div className="border-t border-base-300 bg-base-200/40 px-5 py-4 sm:px-8">
           <p className="max-w-3xl text-sm leading-relaxed text-base-content/80">
-            Need help with shipping or returns? Open the{" "}
-            <strong className="text-base-content">Support chat</strong> tab after payment. Video
-            call links are shared in that thread; everyone joins with the same link.
+            ¿Necesitas ayuda con el envío o devoluciones? Abre la pestaña{" "}
+            <strong className="text-base-content">Chat de soporte</strong> después del pago. Los
+            enlaces de videollamada se comparten en ese hilo; todos entran con el mismo enlace.
           </p>
         </div>
       </div>
@@ -92,25 +92,25 @@ function OrderDetailPage() {
         <div className="flex items-center gap-2 border-b border-base-300 pb-3">
           <HeadphonesIcon className="size-5 text-primary" aria-hidden />
           <h2 className="text-sm font-semibold uppercase tracking-wide text-base-content">
-            Customer support
+            Soporte al cliente
           </h2>
         </div>
 
         <div className="tabs tabs-boxed mt-3 w-fit flex-wrap bg-base-300/50 p-1">
           <NavLink to={`/orders/${id}`} end className={tabClass}>
             <LayoutListIcon className="size-4 shrink-0" aria-hidden />
-            Summary
+            Resumen
           </NavLink>
 
           {paid ? (
             <NavLink to={`/orders/${id}/chat`} className={tabClass}>
               <MessageCircleIcon className="size-4 shrink-0" aria-hidden />
-              Support chat
+              Chat de soporte
             </NavLink>
           ) : (
             <span className="tab tab-disabled gap-2 cursor-not-allowed opacity-50">
               <LockIcon className="size-4 shrink-0" aria-hidden />
-              Support chat
+              Chat de soporte
             </span>
           )}
         </div>
@@ -119,8 +119,8 @@ function OrderDetailPage() {
           <div role="alert" className="alert alert-warning mt-4 text-sm">
             <LockIcon className="size-4 shrink-0" aria-hidden />
             <span>
-              Support unlocks when this order is marked{" "}
-              <strong className="text-base-content">paid</strong> (once payment is confirmed).
+              El soporte se desbloquea cuando este pedido esté{" "}
+              <strong className="text-base-content">pagado</strong> (una vez que se confirme el pago).
             </span>
           </div>
         ) : null}

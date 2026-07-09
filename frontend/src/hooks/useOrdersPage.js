@@ -21,11 +21,21 @@ function useOrdersPage() {
 
   const orders = data?.orders ?? [];
 
+  const { data: unreadData } = useQuery({
+    queryKey: ["unread-counts"],
+    queryFn: () => apiFetch("/api/orders/unread-counts", { getToken }),
+    enabled: isSignedIn && staff,
+    refetchInterval: 15000,
+  });
+
+  const unread = unreadData?.unread ?? {};
+
   return {
     isLoading,
     error,
     orders,
     staff,
+    unread,
   };
 }
 

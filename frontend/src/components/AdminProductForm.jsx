@@ -65,7 +65,7 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
     setUploadError(null);
 
     if (file.size > 10 * 1024 * 1024) {
-      setUploadError("File is too large (max 10MB).");
+      setUploadError("El archivo es demasiado grande (máx 10 MB).");
       return;
     }
 
@@ -82,7 +82,7 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
       setImageUrl(url);
       setImageKitFileId(fileId ?? "");
     } catch (err) {
-      setUploadError(err instanceof Error ? err.message : "Upload failed");
+      setUploadError(err instanceof Error ? err.message : "Error al subir");
     } finally {
       setUploadingImage(false);
     }
@@ -102,7 +102,7 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
       </label>
 
       <label className="form-control w-full">
-        <span className="label-text">Name</span>
+        <span className="label-text">Nombre</span>
         <input
           className="input input-bordered w-full"
           value={name}
@@ -112,18 +112,18 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
       </label>
 
       <label className="form-control w-full">
-        <span className="label-text">Category</span>
+        <span className="label-text">Categoría</span>
         <input
           className="input input-bordered w-full"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          placeholder="e.g. Audio, Workspace"
+          placeholder="Ej. Audio, Accesorios"
           required
         />
       </label>
 
       <label className="form-control w-full">
-        <span className="label-text">Description</span>
+        <span className="label-text">Descripción</span>
         <textarea
           className="textarea textarea-bordered h-24 w-full"
           value={description}
@@ -133,7 +133,7 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
 
       <div className="grid grid-cols-2 gap-2">
         <label className="form-control">
-          <span className="label-text">Price (COP)</span>
+          <span className="label-text">Precio</span>
           <input
             className="input input-bordered"
             type="number"
@@ -146,7 +146,7 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
         </label>
 
         <label className="form-control">
-          <span className="label-text">Currency</span>
+          <span className="label-text">Moneda</span>
           <input
             className="input input-bordered"
             value={currency}
@@ -157,17 +157,17 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
       </div>
 
       <div className="form-control w-full">
-        <span className="label-text">Image</span>
+        <span className="label-text">Imagen</span>
         <label className="mb-2 flex cursor-pointer flex-wrap items-center gap-2">
           <span className="btn btn-secondary btn-sm shrink-0">
             {uploadingImage ? (
               <span className="loading loading-spinner loading-xs" />
             ) : (
-              "Upload to ImageKit"
+              "Subir a ImageKit"
             )}
           </span>
 
-          <span className="text-xs text-base-content/60">PNG, JPG, WebP, GIF · max 10MB</span>
+          <span className="text-xs text-base-content/60">PNG, JPG, WebP, GIF · máx 10 MB</span>
 
           <input
             type="file"
@@ -179,7 +179,7 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
         </label>
 
         <label className="label py-0">
-          <span className="label-text-alt text-base-content/60">Image URL (any HTTPS URL)</span>
+          <span className="label-text-alt text-base-content/60">URL de la imagen (cualquier HTTPS)</span>
         </label>
 
         <input
@@ -212,7 +212,7 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
       </div>
 
       <fieldset className="border border-base-300 rounded-box p-4">
-        <legend className="text-sm font-medium text-base-content/70 px-1">Colors (opcional)</legend>
+        <legend className="text-sm font-medium text-base-content/70 px-1">Colores (opcional)</legend>
         <p className="text-xs text-base-content/50 mb-3">Si el producto viene en varios colores, agrégalos aquí.</p>
         {colors.map((c, i) => (
           <div key={i} className="flex items-center gap-2 mb-2">
@@ -251,7 +251,7 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
           className="btn btn-ghost btn-xs gap-1 mt-1"
           onClick={() => setColors([...colors, { name: "", hex: "#cccccc" }])}
         >
-          + Add color
+          + Añadir color
         </button>
       </fieldset>
 
@@ -262,21 +262,21 @@ export function AdminProductForm({ initial, saving, error, getToken, onCancel, o
           checked={active}
           onChange={(e) => setActive(e.target.checked)}
         />
-        <span className="label-text">Active in store</span>
+        <span className="label-text">Activo en tienda</span>
       </label>
 
       {error ? (
         <div role="alert" className="alert alert-error text-sm">
-          Save failed (check slug unique &amp; fields).
+          Error al guardar (revisa que el slug sea único y los campos).
         </div>
       ) : null}
 
       <div className="modal-action">
         <button type="button" className="btn btn-ghost" onClick={onCancel}>
-          Cancel
+          Cancelar
         </button>
         <button type="submit" className="btn btn-primary" disabled={saving || uploadingImage}>
-          {saving ? <span className="loading loading-spinner loading-sm" /> : "Save"}
+          {saving ? <span className="loading loading-spinner loading-sm" /> : "Guardar"}
         </button>
       </div>
     </form>

@@ -1,4 +1,4 @@
-import { ChevronRightIcon, PackageIcon } from "lucide-react";
+import { ChevronRightIcon, MessageCircleIcon, PackageIcon } from "lucide-react";
 import { OrdersListSkeleton } from "../components/LoadingSkeletons";
 import { PageError } from "../components/PageError";
 import useOrdersPage from "../hooks/useOrdersPage";
@@ -7,7 +7,7 @@ import { OrderPreview } from "../components/OrderPreview";
 import { formatOrderWhen, formatPrice } from "../utils/format";
 
 function OrdersPage() {
-  const { isLoading, error, orders, staff } = useOrdersPage();
+  const { isLoading, error, orders, staff, unread } = useOrdersPage();
 
   if (isLoading) {
     return (
@@ -82,7 +82,7 @@ function OrdersPage() {
                                 : "badge-error"
                           }`}
                         >
-                          {o.status}
+                          {o.status === "paid" ? "Pagado" : o.status === "pending" ? "Pendiente" : "Fallido"}
                         </span>
                       </div>
 
@@ -94,12 +94,24 @@ function OrdersPage() {
                     </div>
 
                     <div className="flex shrink-0 items-center gap-3">
+                      {staff && unread[o.id] ? (
+                        <div className="indicator">
+                          <span className="indicator-item badge badge-xs badge-accent size-5 p-0 font-bold tabular-nums">
+                            {unread[o.id] > 99 ? "99+" : unread[o.id]}
+                          </span>
+                          <MessageCircleIcon
+                            className="size-5 text-accent"
+                            aria-hidden
+                          />
+                        </div>
+                      ) : null}
+
                       <div className="text-right">
                         <p className="text-xs font-medium uppercase tracking-wide text-base-content/50">
                           Total
                         </p>
                         <p className="text-lg font-bold tabular-nums text-base-content sm:text-xl">
-                          {formatPrice(o.totalCents, "COP")}
+                          {formatPrice(o.totalCents)}
                         </p>
                       </div>
                       <ChevronRightIcon

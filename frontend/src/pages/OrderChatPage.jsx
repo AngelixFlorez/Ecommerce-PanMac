@@ -17,7 +17,7 @@ function OrderChatPage() {
   const { paid, client, error, channel, canInvite, inviteMutation } = useOrderChatPage();
 
   if (!paid) {
-    return <p className="text-base-content/60">Complete payment to open support chat.</p>;
+    return <p className="text-base-content/60">Completa el pago para abrir el chat de soporte.</p>;
   }
   if (error) {
     return <PageError message={error} />;
@@ -37,10 +37,10 @@ function OrderChatPage() {
           </div>
 
           <div className="flex-1">
-            <h3 className="card-title text-base">Message support</h3>
+            <h3 className="card-title text-base">Enviar mensaje</h3>
             <p className="text-sm text-base-content/70">
-              Ask about this order, shipping, or returns. Support can send a video call link here
-              when needed; both sides use the same Join button.
+              Pregunta sobre este pedido, envío o devoluciones. El soporte puede enviar un enlace de
+              videollamada aquí cuando sea necesario; ambos lados usan el mismo botón de Unirse.
             </p>
 
             {canInvite ? (
@@ -56,15 +56,15 @@ function OrderChatPage() {
                   ) : (
                     <VideoIcon className="size-4" aria-hidden />
                   )}
-                  Send video call invite
+                  Enviar invitación de video
                 </button>
 
                 {inviteMutation.isError ? (
-                  <span className="text-sm text-error">Could not send invite.</span>
+                  <span className="text-sm text-error">No se pudo enviar la invitación.</span>
                 ) : null}
 
                 {inviteMutation.isSuccess ? (
-                  <span className="text-sm text-success">Invite sent.</span>
+                  <span className="text-sm text-success">Invitación enviada.</span>
                 ) : null}
               </div>
             ) : null}

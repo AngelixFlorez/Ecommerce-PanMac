@@ -19,6 +19,9 @@ const envSchema = z.object({
 
   POLAR_CHECKOUT_PRODUCT_ID: z.string().uuid(),
 
+  STORE_CURRENCY: z.string().default("COP"),
+  STORE_CURRENCY_MINOR_UNITS: z.coerce.number().default(2),
+
   STREAM_API_KEY: z.string().min(1),
   STREAM_API_SECRET: z.string().min(1),
 
