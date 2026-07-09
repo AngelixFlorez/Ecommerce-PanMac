@@ -1,23 +1,30 @@
 import { useLocation } from "react-router";
-import { useAuth } from "@clerk/react";
-import { useEffect, useRef } from "react";
+import { useClerk } from "@clerk/react";
+import { useEffect } from "react";
 import { useCart } from "../store/cart";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
 function Layout({ children }) {
   const { pathname } = useLocation();
-  const { userId, isLoaded } = useAuth();
+  const clerk = useClerk();
   const clearCart = useCart((s) => s.clear);
-  const prevUserId = useRef(userId);
 
   useEffect(() => {
-    if (!isLoaded) return;
-    if (prevUserId.current && !userId) {
-      clearCart();
-    }
-    prevUserId.current = userId;
-  }, [userId, isLoaded, clearCart]);
+    if (!clerk?.addListener) return;
+    let hadUser = false;
+    const listener = (event) => {
+      if (event.user) {
+        hadUser = true;
+      } else if (hadUser) {
+        clearCart();
+      }
+    };
+    clerk.addListener(listener);
+    return () => {
+      try { clerk.removeListener(listener); } catch {}
+    };
+  }, [clerk, clearCart]);
 
   const isProductPage = pathname.startsWith("/product/");
 
