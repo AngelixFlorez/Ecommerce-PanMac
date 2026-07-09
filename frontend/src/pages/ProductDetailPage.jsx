@@ -18,19 +18,20 @@ function ProductDetailPage() {
   const addItem = useCart((s) => s.addItem);
   const { product, isLoading, error } = useProductPage();
 
+  const p = product;
+  const hasColors = p?.colors && p.colors.length > 0;
+  const [selectedColor, setSelectedColor] = useState(hasColors ? p.colors[0]?.name ?? null : null);
+
   if (isLoading) return <ProductPageSkeleton />;
 
   if (error || !product) {
     return <PageError message="Producto no encontrado." action={{ to: "/", label: "Volver a la tienda" }} />;
   }
 
-  const p = product;
   const category = p.category ?? "General";
   const watermarkedFullUrl = p.imageUrl
     ? imageKitWatermarkedUrl(p.imageUrl, IK_PRESETS.productHero)
     : null;
-  const hasColors = p.colors && p.colors.length > 0;
-  const [selectedColor, setSelectedColor] = useState(hasColors ? p.colors[0]?.name ?? null : null);
 
   return (
     <div>
