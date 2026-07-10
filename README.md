@@ -431,4 +431,4 @@ Este proyecto es de código abierto y está disponible bajo la licencia [ISC Lic
 
 ---
 
-Hecho con 💜 por Angeli
+Made with 💜 by [AngelixFlorez](https://github.com/AngelixFlorez)
